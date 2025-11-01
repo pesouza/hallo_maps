@@ -97,6 +97,55 @@ function updateRankingForUser(user, score) {
   renderRanking();
 }
 
+// ---------------- VOTES (storage) ---------------- //
+
+function votesKey() { return 'hallo_maps_votes'; }
+function loadVotes() {
+  try {
+    return JSON.parse(localStorage.getItem(votesKey()) || '{}');
+  } catch {
+    return {};
+  }
+}
+function saveVotes(obj) {
+  localStorage.setItem(votesKey(), JSON.stringify(obj));
+}
+function userHasVoted(user, house, cat) {
+  if (!user) return false;
+  const v = loadVotes();
+  return !!(v[house] && v[house][cat] && Array.isArray(v[house][cat].voters) && v[house][cat].voters.includes(user));
+}
+function castVote(user, house, cat) {
+  if (!user) return false;
+  const v = loadVotes();
+  v[house] = v[house] || {};
+  v[house][cat] = v[house][cat] || { count: 0, voters: [] };
+  if (v[house][cat].voters.includes(user)) return false;
+  v[house][cat].voters.push(user);
+  v[house][cat].count = (v[house][cat].count || 0) + 1;
+  saveVotes(v);
+  return true;
+}
+function getVotesForHouse(house) {
+  const v = loadVotes();
+  return v[house] || {};
+}
+function getHouseTotalVotes(house) {
+  const byCat = getVotesForHouse(house);
+  return Object.values(byCat).reduce((s, c) => s + (c.count||0), 0);
+}
+function getTopHouses(limit = 5) {
+  const v = loadVotes();
+  // ensure we include houses even with zero votes
+  const totals = {};
+  Object.keys(markersMap).forEach(name => totals[name] = 0);
+  Object.entries(v).forEach(([house, byCat]) => {
+    totals[house] = Object.values(byCat).reduce((s, c) => s + (c.count||0), 0);
+  });
+  const arr = Object.entries(totals).sort((a,b) => b[1] - a[1]);
+  return arr.slice(0, limit);
+}
+
 // ---------------- UI HELPERS ---------------- //
 const houseContextEl = document.getElementById('houseContext');
 const hcTitle = document.getElementById('hcTitle');
@@ -126,14 +175,48 @@ function showUserUI(user) {
 }
 
 function renderRanking() {
+  // rankingListEl mostrará: Top 5 casas (por votos) e depois ranking de usuários
+  rankingListEl.innerHTML = '';
+
+  // Top casas
+  const top = getTopHouses(5);
+  const topHeader = document.createElement('li');
+  topHeader.innerHTML = '<strong>Top casas (votos)</strong>';
+  rankingListEl.appendChild(topHeader);
+  if (top.length === 0) {
+    const empty = document.createElement('li');
+    empty.textContent = 'Nenhuma casa votada ainda';
+    rankingListEl.appendChild(empty);
+  } else {
+    top.forEach(([house, total]) => {
+      const li = document.createElement('li');
+      li.textContent = `${house} — ${total} voto(s)`;
+      rankingListEl.appendChild(li);
+    });
+  }
+
+  // Separator
+  const sep = document.createElement('li');
+  sep.innerHTML = '<hr>';
+  rankingListEl.appendChild(sep);
+
+  // Usuários (ranking existente)
   const r = loadRanking();
   const entries = Object.entries(r).sort((a,b) => b[1] - a[1]);
-  rankingListEl.innerHTML = '';
-  entries.forEach(([user, score]) => {
-    const li = document.createElement('li');
-    li.textContent = `${user} — ${score} casas`;
-    rankingListEl.appendChild(li);
-  });
+  const usersHeader = document.createElement('li');
+  usersHeader.innerHTML = '<strong>Usuários</strong>';
+  rankingListEl.appendChild(usersHeader);
+  if (entries.length === 0) {
+    const empty = document.createElement('li');
+    empty.textContent = 'Nenhum usuário registrado';
+    rankingListEl.appendChild(empty);
+  } else {
+    entries.forEach(([user, score]) => {
+      const li = document.createElement('li');
+      li.textContent = `${user} — ${score} casas`;
+      rankingListEl.appendChild(li);
+    });
+  }
 }
 
 // ---------------- PROGRESS / CONTADOR ---------------- //
@@ -211,11 +294,8 @@ fetch('casas.json')
         <img class="popup-img" src="${casa.img}" alt="${casa.nome}">
       `);
 
-      // ao clicar no marker: abre popup e, em seguida, abre o painel de contexto.
-      // usamos popupopen para evitar conflitos visuais com o popup do Leaflet.
+      // ao abrir popup: mostra painel de contexto logo depois (evita conflito visual)
       marker.on('popupopen', () => {
-        // mostra contexto (visualização pública possível mesmo sem login)
-        // pequeno atraso para garantir que popup do leaflet abra primeiro
         setTimeout(() => showHouseContext(casa.nome), 120);
       });
 
@@ -283,6 +363,7 @@ function aplicarDepoisLogin() {
   applyVisitedStyles();
   showUserUI(currentUser);
   updateRankingForUser(currentUser, casasVisitadas.size);
+  renderRanking();
   verificarVitoria();
 }
 
@@ -334,20 +415,67 @@ function renderPublicNotesForHouse(houseName) {
   hcPublicNotes.innerHTML = lines.length ? lines.join('<br>') : 'Nenhuma';
 }
 
-// cria inputs para categorias
+// cria inputs para categorias (agora com botão de voto e contador)
 function buildHCCategories(houseName, user) {
   hcCategoriesEl.innerHTML = '';
   const userNotes = loadUserNotes(user)[houseName] || {};
+  const votesForHouse = getVotesForHouse(houseName);
+
   HC_CATEGORIES.forEach(cat => {
     const wrapper = document.createElement('div');
     wrapper.className = 'hc-row';
+
+    const labelWrap = document.createElement('div');
+    labelWrap.style.display = 'flex';
+    labelWrap.style.alignItems = 'center';
+    labelWrap.style.gap = '8px';
+
     const label = document.createElement('label');
     label.textContent = cat;
+    label.style.flex = '1';
+
+    const voteCountSpan = document.createElement('span');
+    voteCountSpan.className = 'hc-vote-count';
+    voteCountSpan.textContent = (votesForHouse[cat] && votesForHouse[cat].count) ? votesForHouse[cat].count : '0';
+
+    const voteBtn = document.createElement('button');
+    voteBtn.type = 'button';
+    voteBtn.textContent = '👍';
+    voteBtn.title = 'Votar nesta categoria';
+    voteBtn.dataset.cat = cat;
+    voteBtn.dataset.house = houseName;
+
+    // estado inicial do botão (desabilitado se usuário já votou)
+    if (!currentUser) voteBtn.disabled = true;
+    if (currentUser && userHasVoted(currentUser, houseName, cat)) voteBtn.disabled = true;
+
+    voteBtn.addEventListener('click', () => {
+      if (!currentUser) {
+        alert('Faça login para votar.');
+        return;
+      }
+      const ok = castVote(currentUser, houseName, cat);
+      if (!ok) {
+        alert('Você já votou nesta categoria para esta casa.');
+        voteBtn.disabled = true;
+        return;
+      }
+      // atualiza contador e UI
+      voteCountSpan.textContent = getVotesForHouse(houseName)[cat].count;
+      voteBtn.disabled = true;
+      renderRanking(); // atualiza top casas
+    });
+
+    labelWrap.appendChild(label);
+    labelWrap.appendChild(voteCountSpan);
+    labelWrap.appendChild(voteBtn);
+
     const ta = document.createElement('textarea');
     ta.dataset.category = cat;
     ta.rows = 2;
     ta.value = userNotes[cat] || '';
-    wrapper.appendChild(label);
+
+    wrapper.appendChild(labelWrap);
     wrapper.appendChild(ta);
     hcCategoriesEl.appendChild(wrapper);
   });
