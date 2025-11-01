@@ -21,24 +21,32 @@ const playerIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-// Áudio de vitória (arquivo local)
-const audio = new Audio('victory.mp3');
+// Áudio de vitória: preferir o elemento <audio id="somDoce"> do HTML
+const audioElFromDOM = document.getElementById('somDoce');
+const audio = audioElFromDOM || new Audio('victory.mp3');
 
 // Elementos da interface
 const visitasEl = document.getElementById('visitas');
-const vitoriaBox = document.createElement("div");
-vitoriaBox.id = "vitoriaBox";
-vitoriaBox.classList.add("hidden");
-vitoriaBox.innerHTML = `
-  <h2>👑 Você visitou todas as casas! 👑</h2>
-  <p>Parabéns, mestre dos doces! 🍫🍭</p>
-`;
-document.body.appendChild(vitoriaBox);
+// usar o #vitoria já existente no HTML em vez de criar outro elemento
+const vitoriaBox = document.getElementById('vitoria') || (function(){
+  const el = document.createElement("div");
+  el.id = "vitoria";
+  el.classList.add("hidden");
+  el.innerHTML = `
+    <h2>👑 Você visitou todas as casas! 👑</h2>
+    <p>Parabéns, mestre dos doces! 🍫🍭</p>
+  `;
+  document.body.appendChild(el);
+  return el;
+})();
 
 // ---------------- ESTADO ---------------- //
 
 let casasVisitadas = new Set(JSON.parse(localStorage.getItem("casasVisitadas")) || []);
 let totalCasas = 0;
+
+// Mantém a contagem anterior para detectar quando a vitória é "atingida agora"
+let prevVisitCount = casasVisitadas.size;
 
 function salvarProgresso() {
   localStorage.setItem("casasVisitadas", JSON.stringify([...casasVisitadas]));
@@ -54,16 +62,21 @@ vitoriaBox.classList.add("hidden");
 // ---------------- FUNÇÕES ---------------- //
 
 function verificarVitoria() {
-  // Só mostra vitória se houver casas carregadas e todas visitadas
-  if (totalCasas > 0 && casasVisitadas.size === totalCasas) {
+  // Só mostra vitória se houver casas carregadas e todas visitadas,
+  // e se essa condição acabou de ser alcançada nesta sessão
+  if (totalCasas > 0 && casasVisitadas.size === totalCasas && prevVisitCount < totalCasas) {
     vitoriaBox.classList.remove("hidden");
-    audio.play().catch(() => {}); // ignora bloqueio de autoplay
-  } else {
+    // tenta tocar áudio, mas ignora erro de autoplay
+    try { audio.play(); } catch (e) {}
+    prevVisitCount = casasVisitadas.size;
+  } else if (casasVisitadas.size !== totalCasas) {
     vitoriaBox.classList.add("hidden");
+    prevVisitCount = casasVisitadas.size;
   }
 }
 
 function animarIcone(marker) {
+  if (!marker._icon) return;
   marker._icon.style.transition = "transform 0.3s";
   marker._icon.style.transform = "scale(1.3)";
   setTimeout(() => marker._icon.style.transform = "scale(1)", 300);
@@ -98,7 +111,7 @@ fetch('casas.json')
       `);
 
       if (casasVisitadas.has(casa.nome)) {
-        marker._icon.style.filter = "grayscale(100%) brightness(70%)";
+        if (marker._icon) marker._icon.style.filter = "grayscale(100%) brightness(70%)";
       }
 
       marker.on('click', () => {
@@ -109,11 +122,12 @@ fetch('casas.json')
           animarIcone(marker);
           verificarVitoria();
         }
-        marker._icon.style.filter = "grayscale(100%) brightness(70%)";
+        if (marker._icon) marker._icon.style.filter = "grayscale(100%) brightness(70%)";
       });
     });
 
     atualizarContador();
+    // verificar, mas só mostrará se a vitória for alcançada agora (prevVisitCount logic)
     verificarVitoria();
   })
   .catch(err => console.error('Erro ao carregar casas:', err));
