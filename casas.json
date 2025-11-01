@@ -268,8 +268,7 @@
     "descricao": "Moradores: Carolina e Rodrigo",
     "address": "Rua Lorenz Morti, 30, São José dos Campos, SP",
     "coords": [
-      -23.203941937978776,
-      -45.955068545652495
+      -23.204119454897228, -45.955092682431676
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -279,8 +278,7 @@
     "descricao": "Moradores: Cristiane",
     "address": "Rua Lorenz Morti, 131, São José dos Campos, SP",
     "coords": [
-      -23.204620426265386,
-      -45.955698403324774
+      -23.204709194169745, -45.95570108243165
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -477,8 +475,7 @@
     "descricao": "",
     "address": "Lorenz Morti, 11, São José dos Campos, SP",
     "coords": [
-      -23.20378603772591,
-      -45.95491864750547
+      -23.203953693891094, -45.954867682431676
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -499,8 +496,7 @@
     "descricao": "Moradores: Nádia e Marcelo",
     "address": "Lorenz Morti, 21, São José dos Campos, SP",
     "coords": [
-      -23.20400635996605,
-      -45.95483953216104
+      -23.204154293965065, -45.95483952905877
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
