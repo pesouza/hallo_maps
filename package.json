@@ -1,0 +1,18 @@
+{
+  "name": "hallo_maps",
+  "version": "1.0.0",
+  "main": "geocode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "csv-parse": "^6.1.0",
+    "csv-stringify": "^6.6.0",
+    "node-fetch": "^2.7.0"
+  }
+}

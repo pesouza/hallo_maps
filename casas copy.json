@@ -1,0 +1,20 @@
+[
+  {
+    "nome": "Casa do Pirulito",
+    "descricao": "Tema: doces e monstros dançantes 🍭",
+    "coords": [-23.2049, -45.9570],
+    "img": "https://cdn-icons-png.flaticon.com/512/4151/4151794.png"
+  },
+  {
+    "nome": "Mansão da Bruxa Alegre",
+    "descricao": "Tema: caldeirões e cupcakes encantados 🧙‍♀️",
+    "coords": [-23.2062, -45.9584],
+    "img": "https://cdn-icons-png.flaticon.com/512/4151/4151766.png"
+  },
+  {
+    "nome": "Toca dos Gatos Fantasmas",
+    "descricao": "Tema: gatos assustadores e música misteriosa 🐈‍⬛",
+    "coords": [-23.2051, -45.9592],
+    "img": "https://cdn-icons-png.flaticon.com/512/4151/4151812.png"
+  }
+]
