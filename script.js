@@ -1,6 +1,6 @@
 // ---------------- CONFIGURAÇÃO INICIAL ---------------- //
 
-const map = L.map('map').setView([-23.205302809518436, -45.95761576548262], 30);
+const map = L.map('map').setView([-23.205302809518436, -45.95761576548262], 50);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
