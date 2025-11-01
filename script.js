@@ -7,18 +7,21 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap',
 }).addTo(map);
 
-// Ícones
+// Ícones (substituídos por tema Halloween)
 const candyIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png',
-  iconSize: [38, 38],
-  iconAnchor: [19, 38],
-  popupAnchor: [0, -38],
+  // recomendado: baixe para assets/pumpkin.png e troque para 'assets/pumpkin.png'
+  iconUrl: 'assets/candy.png',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -36],
 });
 
 const playerIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  // recomendado: baixe para assets/ghost.png e troque para 'assets/ghost.png'
+  iconUrl: 'assets/bat.png',
+  iconSize: [44, 44],
+  iconAnchor: [22, 44],
+  popupAnchor: [0, -40],
 });
 
 // Áudio de vitória: preferir o elemento <audio id="somDoce"> do HTML
