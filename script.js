@@ -1,3 +1,5 @@
+// ---------------- CONFIGURAÇÃO INICIAL ---------------- //
+
 const map = L.map('map').setView([-23.205337, -45.957613], 14);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -5,6 +7,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap',
 }).addTo(map);
 
+// Ícones
 const candyIcon = L.icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png',
   iconSize: [38, 38],
@@ -12,14 +15,28 @@ const candyIcon = L.icon({
   popupAnchor: [0, -38],
 });
 
-const somDoce = document.getElementById("somDoce");
-const vitoriaBox = document.getElementById("vitoria");
-const resetarBtn = document.getElementById("resetar");
+const playerIcon = L.icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
 
-// garante que a caixa de vitória comece escondida
+// Áudio de vitória (arquivo local)
+const audio = new Audio('victory.mp3');
+
+// Elementos da interface
+const visitasEl = document.getElementById('visitas');
+const vitoriaBox = document.createElement("div");
+vitoriaBox.id = "vitoriaBox";
 vitoriaBox.classList.add("hidden");
+vitoriaBox.innerHTML = `
+  <h2>👑 Você visitou todas as casas! 👑</h2>
+  <p>Parabéns, mestre dos doces! 🍫🍭</p>
+`;
+document.body.appendChild(vitoriaBox);
 
-// Carrega progresso anterior
+// ---------------- ESTADO ---------------- //
+
 let casasVisitadas = new Set(JSON.parse(localStorage.getItem("casasVisitadas")) || []);
 let totalCasas = 0;
 
@@ -28,45 +45,50 @@ function salvarProgresso() {
 }
 
 function atualizarContador() {
-  document.getElementById("visitas").textContent = casasVisitadas.size;
-  salvarProgresso();
+  visitasEl.textContent = casasVisitadas.size;
 }
 
+// Garante que a caixa de vitória comece escondida
+vitoriaBox.classList.add("hidden");
+
+// ---------------- FUNÇÕES ---------------- //
+
 function verificarVitoria() {
-  // só considera vitória se souber o total de casas
+  // Só mostra vitória se houver casas carregadas e todas visitadas
   if (totalCasas > 0 && casasVisitadas.size === totalCasas) {
     vitoriaBox.classList.remove("hidden");
+    audio.play().catch(() => {}); // ignora bloqueio de autoplay
   } else {
     vitoriaBox.classList.add("hidden");
   }
 }
 
-resetarBtn.addEventListener("click", () => {
-  localStorage.removeItem("casasVisitadas");
-  casasVisitadas.clear();
-  atualizarContador();
-  vitoriaBox.classList.add("hidden");
-});
+function animarIcone(marker) {
+  marker._icon.style.transition = "transform 0.3s";
+  marker._icon.style.transform = "scale(1.3)";
+  setTimeout(() => marker._icon.style.transform = "scale(1)", 300);
+}
 
-// Mostra a posição atual do jogador
+// ---------------- LOCALIZAÇÃO DO JOGADOR ---------------- //
+
 map.locate({ setView: true, maxZoom: 16, watch: true });
 
 const jogador = L.marker([-23.205337, -45.957613], {
   title: "Você está aqui",
-  icon: L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  })
+  icon: playerIcon
 }).addTo(map);
 
-map.on('locationfound', e => jogador.setLatLng(e.latlng));
+map.on('locationfound', e => {
+  jogador.setLatLng(e.latlng);
+});
 
-// Carrega casas
+// ---------------- CARREGAR CASAS ---------------- //
+
 fetch('casas.json')
   .then(response => response.json())
   .then(casas => {
     totalCasas = casas.length;
+
     casas.forEach(casa => {
       const marker = L.marker(casa.coords, { icon: candyIcon }).addTo(map);
       marker.bindPopup(`
@@ -75,25 +97,19 @@ fetch('casas.json')
         <img class="popup-img" src="${casa.img}" alt="${casa.nome}">
       `);
 
-      // marca visual se já visitada
       if (casasVisitadas.has(casa.nome)) {
-        marker._icon.style.filter = "grayscale(80%) brightness(0.8)";
+        marker._icon.style.filter = "grayscale(100%) brightness(70%)";
       }
 
       marker.on('click', () => {
         if (!casasVisitadas.has(casa.nome)) {
           casasVisitadas.add(casa.nome);
           atualizarContador();
-          somDoce.currentTime = 0;
-          somDoce.play();
-
-          marker._icon.style.transition = "transform 0.3s, filter 0.3s";
-          marker._icon.style.transform = "scale(1.3)";
-          marker._icon.style.filter = "grayscale(80%) brightness(0.8)";
-          setTimeout(() => marker._icon.style.transform = "scale(1)", 300);
-
+          salvarProgresso();
+          animarIcone(marker);
           verificarVitoria();
         }
+        marker._icon.style.filter = "grayscale(100%) brightness(70%)";
       });
     });
 
