@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Caça aos Doces 🎃</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>🎃 Mapa da Caça aos Doces 🎃</h1>
+  <p>Toque nas casas para ganhar doces virtuais! 🍬</p>
+
+  <div id="contador">Casas visitadas: <span id="visitas">0</span></div>
+  <div id="map"></div>
+
+  <!-- Mensagem de vitória -->
+  <div id="vitoria" class="hidden">
+    <h2>👑 Você visitou todas as casas! 👑</h2>
+    <p>Parabéns, mestre dos doces! 🍫🍭</p>
+  </div>
+
+  <!-- Som de doce -->
+  <audio id="somDoce" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_191b450a96.mp3?filename=collectcoin-6075.mp3" preload="auto"></audio>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
