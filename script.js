@@ -16,6 +16,9 @@ const somDoce = document.getElementById("somDoce");
 const vitoriaBox = document.getElementById("vitoria");
 const resetarBtn = document.getElementById("resetar");
 
+// garante que a caixa de vitória comece escondida
+vitoriaBox.classList.add("hidden");
+
 // Carrega progresso anterior
 let casasVisitadas = new Set(JSON.parse(localStorage.getItem("casasVisitadas")) || []);
 let totalCasas = 0;
@@ -30,8 +33,11 @@ function atualizarContador() {
 }
 
 function verificarVitoria() {
-  if (casasVisitadas.size === totalCasas) {
+  // só considera vitória se souber o total de casas
+  if (totalCasas > 0 && casasVisitadas.size === totalCasas) {
     vitoriaBox.classList.remove("hidden");
+  } else {
+    vitoriaBox.classList.add("hidden");
   }
 }
 
