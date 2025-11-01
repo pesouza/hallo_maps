@@ -1,6 +1,6 @@
 // ---------------- CONFIGURAÇÃO INICIAL ---------------- //
 
-const map = L.map('map').setView([-23.205337, -45.957613], 14);
+const map = L.map('map').setView([-23.205302809518436, -45.95761576548262], 16);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -271,7 +271,7 @@ function applyVisitedStyles() {
 
 map.locate({ setView: true, maxZoom: 16, watch: true });
 
-const jogador = L.marker([-23.205337, -45.957613], {
+const jogador = L.marker([-23.205302809518436, -45.95761576548262], {
   title: "Você está aqui",
   icon: playerIcon
 }).addTo(map);
