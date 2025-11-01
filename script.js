@@ -211,18 +211,20 @@ fetch('casas.json')
         <img class="popup-img" src="${casa.img}" alt="${casa.nome}">
       `);
 
+      // ao clicar no marker: abre popup e, em seguida, abre o painel de contexto.
+      // usamos popupopen para evitar conflitos visuais com o popup do Leaflet.
+      marker.on('popupopen', () => {
+        // mostra contexto (visualização pública possível mesmo sem login)
+        // pequeno atraso para garantir que popup do leaflet abra primeiro
+        setTimeout(() => showHouseContext(casa.nome), 120);
+      });
+
       marker.on('click', () => {
-        // abre painel de contexto mesmo sem login (visualizar público)
-        showHouseContext(casa.nome);
-
-        if (!currentUser) {
-          // ainda permite visualizar e anotar após login
-          // mensagem apenas quando tentar registrar visita
-          // não retorna aqui
-        }
-
         // registro de visita (precisa estar logado)
-        if (!currentUser) return;
+        if (!currentUser) {
+          // abre painel mesmo sem login; evita registrar visita
+          return;
+        }
         if (!casasVisitadas.has(casa.nome)) {
           casasVisitadas.add(casa.nome);
           atualizarContador();
@@ -351,12 +353,30 @@ function buildHCCategories(houseName, user) {
   });
 }
 
-// mostra painel de contexto da casa
+// adicionado: verificações de existência e pequenas correções de exibição
+if (!houseContextEl || !hcTitle || !hcCategoriesEl || !hcSaveBtn || !hcCloseBtn || !hcPublicNotes) {
+  console.error('House context: elementos do DOM faltando. Verifique index.html ids (houseContext, hcTitle, hcCategories, hcSave, hcClose, hcPublicNotes).');
+}
+
+// função de exibir painel mais robusta (garante display/z-index e evita ser escondida pelo popup do Leaflet)
 function showHouseContext(houseName) {
+  if (!houseContextEl) return;
   hcTitle.textContent = houseName;
   buildHCCategories(houseName, currentUser);
   renderPublicNotesForHouse(houseName);
+
+  // força estilos que garantem visibilidade (se CSS faltar)
+  houseContextEl.style.display = 'block';
+  houseContextEl.style.position = houseContextEl.style.position || 'fixed';
+  houseContextEl.style.zIndex = '10000';
+  // remove a classe hidden se existir
   houseContextEl.classList.remove('hidden');
+
+  // pequena espera para deixar o popup do leaflet abrir/fechar antes de focar no painel
+  requestAnimationFrame(() => {
+    const firstTA = hcCategoriesEl.querySelector('textarea');
+    if (firstTA) firstTA.focus();
+  });
 }
 
 // fecha painel
