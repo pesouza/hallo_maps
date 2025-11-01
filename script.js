@@ -27,7 +27,6 @@ const audio = audioElFromDOM || new Audio('victory.mp3');
 
 // Elementos da interface
 const visitasEl = document.getElementById('visitas');
-// usar o #vitoria já existente no HTML em vez de criar outro elemento
 const vitoriaBox = document.getElementById('vitoria') || (function(){
   const el = document.createElement("div");
   el.id = "vitoria";
@@ -40,16 +39,94 @@ const vitoriaBox = document.getElementById('vitoria') || (function(){
   return el;
 })();
 
+const loginBox = document.getElementById('loginBox');
+const loginInput = document.getElementById('loginUsername');
+const loginBtn = document.getElementById('loginBtn');
+const userInfo = document.getElementById('userInfo');
+const currentUserSpan = document.getElementById('currentUser');
+const logoutBtn = document.getElementById('logoutBtn');
+const rankingListEl = document.getElementById('rankingList');
+
 // ---------------- ESTADO ---------------- //
 
-let casasVisitadas = new Set(JSON.parse(localStorage.getItem("casasVisitadas")) || []);
+let markersMap = {}; // nome -> marker
+let casasVisitadas = new Set();
 let totalCasas = 0;
+let currentUser = localStorage.getItem('hallo_maps_currentUser') || null;
 
 // Mantém a contagem anterior para detectar quando a vitória é "atingida agora"
-let prevVisitCount = casasVisitadas.size;
+let prevVisitCount = 0;
+
+// ---------------- STORAGE HELPERS ---------------- //
+
+function progressKey(user) { return `hallo_maps_progress_${user}`; }
+function rankingKey() { return `hallo_maps_ranking`; }
+
+function loadUserProgress(user) {
+  if (!user) return new Set();
+  const raw = localStorage.getItem(progressKey(user));
+  try {
+    return new Set(JSON.parse(raw || '[]'));
+  } catch {
+    return new Set();
+  }
+}
+
+function saveUserProgress(user, set) {
+  if (!user) return;
+  localStorage.setItem(progressKey(user), JSON.stringify([...set]));
+}
+
+function loadRanking() {
+  try {
+    return JSON.parse(localStorage.getItem(rankingKey()) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveRanking(obj) {
+  localStorage.setItem(rankingKey(), JSON.stringify(obj));
+}
+
+function updateRankingForUser(user, score) {
+  if (!user) return;
+  const r = loadRanking();
+  r[user] = score;
+  saveRanking(r);
+  renderRanking();
+}
+
+// ---------------- UI HELPERS ---------------- //
+
+function showLoginUI() {
+  loginBox.classList.remove('hidden');
+  userInfo.classList.add('hidden');
+}
+
+function showUserUI(user) {
+  loginBox.classList.add('hidden');
+  userInfo.classList.remove('hidden');
+  currentUserSpan.textContent = user;
+}
+
+function renderRanking() {
+  const r = loadRanking();
+  const entries = Object.entries(r).sort((a,b) => b[1] - a[1]);
+  rankingListEl.innerHTML = '';
+  entries.forEach(([user, score]) => {
+    const li = document.createElement('li');
+    li.textContent = `${user} — ${score} casas`;
+    rankingListEl.appendChild(li);
+  });
+}
+
+// ---------------- PROGRESS / CONTADOR ---------------- //
 
 function salvarProgresso() {
-  localStorage.setItem("casasVisitadas", JSON.stringify([...casasVisitadas]));
+  if (!currentUser) return;
+  saveUserProgress(currentUser, casasVisitadas);
+  updateRankingForUser(currentUser, casasVisitadas.size);
 }
 
 function atualizarContador() {
@@ -62,11 +139,8 @@ vitoriaBox.classList.add("hidden");
 // ---------------- FUNÇÕES ---------------- //
 
 function verificarVitoria() {
-  // Só mostra vitória se houver casas carregadas e todas visitadas,
-  // e se essa condição acabou de ser alcançada nesta sessão
   if (totalCasas > 0 && casasVisitadas.size === totalCasas && prevVisitCount < totalCasas) {
     vitoriaBox.classList.remove("hidden");
-    // tenta tocar áudio, mas ignora erro de autoplay
     try { audio.play(); } catch (e) {}
     prevVisitCount = casasVisitadas.size;
   } else if (casasVisitadas.size !== totalCasas) {
@@ -80,6 +154,16 @@ function animarIcone(marker) {
   marker._icon.style.transition = "transform 0.3s";
   marker._icon.style.transform = "scale(1.3)";
   setTimeout(() => marker._icon.style.transform = "scale(1)", 300);
+}
+
+function applyVisitedStyles() {
+  Object.entries(markersMap).forEach(([nome, marker]) => {
+    if (casasVisitadas.has(nome)) {
+      if (marker._icon) marker._icon.style.filter = "grayscale(100%) brightness(70%)";
+    } else {
+      if (marker._icon) marker._icon.style.filter = "";
+    }
+  });
 }
 
 // ---------------- LOCALIZAÇÃO DO JOGADOR ---------------- //
@@ -104,17 +188,19 @@ fetch('casas.json')
 
     casas.forEach(casa => {
       const marker = L.marker(casa.coords, { icon: candyIcon }).addTo(map);
+      markersMap[casa.nome] = marker;
+
       marker.bindPopup(`
         <b>${casa.nome}</b><br>
         ${casa.descricao}<br>
         <img class="popup-img" src="${casa.img}" alt="${casa.nome}">
       `);
 
-      if (casasVisitadas.has(casa.nome)) {
-        if (marker._icon) marker._icon.style.filter = "grayscale(100%) brightness(70%)";
-      }
-
       marker.on('click', () => {
+        if (!currentUser) {
+          alert('Faça login para registrar visitas.');
+          return;
+        }
         if (!casasVisitadas.has(casa.nome)) {
           casasVisitadas.add(casa.nome);
           atualizarContador();
@@ -126,8 +212,58 @@ fetch('casas.json')
       });
     });
 
+    // se já houver usuário logado ao iniciar, carregue progresso e aplique estilos
+    if (currentUser) {
+      casasVisitadas = loadUserProgress(currentUser);
+      prevVisitCount = casasVisitadas.size;
+      atualizarContador();
+      applyVisitedStyles();
+      showUserUI(currentUser);
+    } else {
+      showLoginUI();
+    }
+
     atualizarContador();
-    // verificar, mas só mostrará se a vitória for alcançada agora (prevVisitCount logic)
+    renderRanking();
     verificarVitoria();
   })
   .catch(err => console.error('Erro ao carregar casas:', err));
+
+// ---------------- LOGIN / LOGOUT ---------------- //
+
+loginBtn.addEventListener('click', () => {
+  const name = (loginInput.value || '').trim();
+  if (!name) {
+    alert('Digite um nome válido.');
+    return;
+  }
+  currentUser = name;
+  localStorage.setItem('hallo_maps_currentUser', currentUser);
+  casasVisitadas = loadUserProgress(currentUser);
+  prevVisitCount = casasVisitadas.size;
+  aplicarDepoisLogin();
+});
+
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('hallo_maps_currentUser');
+  currentUser = null;
+  casasVisitadas = new Set();
+  prevVisitCount = 0;
+  atualizarContador();
+  applyVisitedStyles();
+  showLoginUI();
+});
+
+function aplicarDepoisLogin() {
+  atualizarContador();
+  applyVisitedStyles();
+  showUserUI(currentUser);
+  updateRankingForUser(currentUser, casasVisitadas.size);
+  verificarVitoria();
+}
+
+// inicialização visual caso o DOM contenha o usuário ao carregar
+if (currentUser) {
+  // currentUser já definido; UI será ajustada quando as casas terminarem de carregar
+  currentUserSpan.textContent = currentUser;
+}

@@ -11,10 +11,31 @@
   <h1>🎃 Mapa da Caça aos Doces 🎃</h1>
   <p>Toque nas casas para ganhar doces virtuais! 🍬</p>
 
+  <!-- --- LOGIN / USUÁRIO --- -->
+  <div id="loginBox">
+    <input id="loginUsername" placeholder="Digite seu nome" />
+    <button id="loginBtn">Entrar</button>
+  </div>
+
+  <div id="userInfo" class="hidden">
+    Usuário: <span id="currentUser"></span>
+    <button id="logoutBtn">Sair</button>
+  </div>
+
   <div id="contador">Casas visitadas: <span id="visitas">0</span></div>
   <div id="map"></div>
 
-  
+  <!-- Mensagem de vitória -->
+  <div id="vitoria" class="hidden">
+    <h2>👑 Você visitou todas as casas! 👑</h2>
+    <p>Parabéns, mestre dos doces! 🍫🍭</p>
+  </div>
+
+  <!-- Ranking -->
+  <aside id="ranking" class="ranking">
+    <h2>Ranking</h2>
+    <ol id="rankingList"></ol>
+  </aside>
 
   <!-- Som de doce -->
   <audio id="somDoce" src="assets/collectcoin-6075.mp3" preload="auto"></audio>
