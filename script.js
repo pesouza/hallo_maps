@@ -98,6 +98,21 @@ function updateRankingForUser(user, score) {
 }
 
 // ---------------- UI HELPERS ---------------- //
+const houseContextEl = document.getElementById('houseContext');
+const hcTitle = document.getElementById('hcTitle');
+const hcCategoriesEl = document.getElementById('hcCategories');
+const hcSaveBtn = document.getElementById('hcSave');
+const hcCloseBtn = document.getElementById('hcClose');
+const hcPublicNotes = document.getElementById('hcPublicNotes');
+
+// categorias de notas para cada casa
+const HC_CATEGORIES = [
+  'mais assustadora',
+  'mais criativa',
+  'melhores doces',
+  'family friendly',
+  'decoração'
+];
 
 function showLoginUI() {
   loginBox.classList.remove('hidden');
@@ -197,10 +212,17 @@ fetch('casas.json')
       `);
 
       marker.on('click', () => {
+        // abre painel de contexto mesmo sem login (visualizar público)
+        showHouseContext(casa.nome);
+
         if (!currentUser) {
-          alert('Faça login para registrar visitas.');
-          return;
+          // ainda permite visualizar e anotar após login
+          // mensagem apenas quando tentar registrar visita
+          // não retorna aqui
         }
+
+        // registro de visita (precisa estar logado)
+        if (!currentUser) return;
         if (!casasVisitadas.has(casa.nome)) {
           casasVisitadas.add(casa.nome);
           atualizarContador();
@@ -267,3 +289,101 @@ if (currentUser) {
   // currentUser já definido; UI será ajustada quando as casas terminarem de carregar
   currentUserSpan.textContent = currentUser;
 }
+
+// ---------------- STORAGE HELPERS (notas) ---------------- //
+function notesKey(user) { return `hallo_maps_notes_${user}`; }
+function loadUserNotes(user) {
+  if (!user) return {};
+  try {
+    return JSON.parse(localStorage.getItem(notesKey(user)) || '{}');
+  } catch { return {}; }
+}
+function saveUserNotes(user, notesObj) {
+  if (!user) return;
+  localStorage.setItem(notesKey(user), JSON.stringify(notesObj));
+}
+
+// agrega notas públicas (simples) - retorna objeto house -> { categoria -> [texts...] }
+function loadPublicNotes() {
+  try {
+    return JSON.parse(localStorage.getItem('hallo_maps_publicNotes') || '{}');
+  } catch { return {}; }
+}
+function savePublicNotes(obj) {
+  localStorage.setItem('hallo_maps_publicNotes', JSON.stringify(obj));
+}
+function addPublicNote(houseName, category, text, user) {
+  const all = loadPublicNotes();
+  all[houseName] = all[houseName] || {};
+  all[houseName][category] = all[houseName][category] || [];
+  all[houseName][category].push({ user, text, date: Date.now() });
+  savePublicNotes(all);
+}
+
+// renderiza resumo público simples
+function renderPublicNotesForHouse(houseName) {
+  const all = loadPublicNotes();
+  const byHouse = all[houseName] || {};
+  const lines = [];
+  for (const cat of HC_CATEGORIES) {
+    const arr = byHouse[cat] || [];
+    if (arr.length) lines.push(`<strong>${cat}:</strong> ${arr.length} comentário(s)`);
+  }
+  hcPublicNotes.innerHTML = lines.length ? lines.join('<br>') : 'Nenhuma';
+}
+
+// cria inputs para categorias
+function buildHCCategories(houseName, user) {
+  hcCategoriesEl.innerHTML = '';
+  const userNotes = loadUserNotes(user)[houseName] || {};
+  HC_CATEGORIES.forEach(cat => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'hc-row';
+    const label = document.createElement('label');
+    label.textContent = cat;
+    const ta = document.createElement('textarea');
+    ta.dataset.category = cat;
+    ta.rows = 2;
+    ta.value = userNotes[cat] || '';
+    wrapper.appendChild(label);
+    wrapper.appendChild(ta);
+    hcCategoriesEl.appendChild(wrapper);
+  });
+}
+
+// mostra painel de contexto da casa
+function showHouseContext(houseName) {
+  hcTitle.textContent = houseName;
+  buildHCCategories(houseName, currentUser);
+  renderPublicNotesForHouse(houseName);
+  houseContextEl.classList.remove('hidden');
+}
+
+// fecha painel
+hcCloseBtn.addEventListener('click', () => houseContextEl.classList.add('hidden'));
+
+// salvar notas: persiste para o usuário e opcionalmente adiciona ao público
+hcSaveBtn.addEventListener('click', () => {
+  if (!currentUser) {
+    alert('Faça login para salvar notas.');
+    return;
+  }
+  const houseName = hcTitle.textContent;
+  const userNotesAll = loadUserNotes(currentUser);
+  userNotesAll[houseName] = userNotesAll[houseName] || {};
+  hcCategoriesEl.querySelectorAll('textarea').forEach(ta => {
+    const cat = ta.dataset.category;
+    const text = (ta.value || '').trim();
+    if (text) {
+      userNotesAll[houseName][cat] = text;
+      // também grava um comentário público resumido para esta categoria
+      addPublicNote(houseName, cat, text, currentUser);
+    } else {
+      // remove categoria vazia
+      delete userNotesAll[houseName][cat];
+    }
+  });
+  saveUserNotes(currentUser, userNotesAll);
+  renderPublicNotesForHouse(houseName);
+  alert('Notas salvas.');
+});

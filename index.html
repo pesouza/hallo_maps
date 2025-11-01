@@ -37,6 +37,25 @@
     <ol id="rankingList"></ol>
   </aside>
 
+  <!-- House context / notas por casa -->
+  <aside id="houseContext" class="hidden">
+    <header>
+      <h3 id="hcTitle">Casa</h3>
+      <button id="hcClose">Fechar</button>
+    </header>
+    <form id="hcForm">
+      <!-- categorias serão injetadas por script -->
+      <div id="hcCategories"></div>
+      <div class="hc-actions">
+        <button type="button" id="hcSave">Salvar notas</button>
+      </div>
+    </form>
+    <section id="hcMeta" class="hc-meta">
+      <h4>Anotações públicas</h4>
+      <div id="hcPublicNotes">Nenhuma</div>
+    </section>
+  </aside>
+
   <!-- Som de doce -->
   <audio id="somDoce" src="assets/collectcoin-6075.mp3" preload="auto"></audio>
 
