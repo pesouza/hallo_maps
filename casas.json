@@ -4,8 +4,7 @@
     "descricao": "Moradores: Luana",
     "address": "Priscilliana de Moraes, 24, São José dos Campos, SP",
     "coords": [
-      -23.2032125,
-      -45.9540018
+      -23.203414681066356, -45.95381374750558
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -15,8 +14,7 @@
     "descricao": "Moradores: Marília e Ricardo",
     "address": "Vicente Cursino dos Santos, 88, São José dos Campos, SP",
     "coords": [
-      -23.2050943,
-      -45.958343
+      -23.205060283250482, -45.958519176341625
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -26,8 +24,7 @@
     "descricao": "Moradores: Thaisa",
     "address": "Priscilliana de Moraes, 94, São José dos Campos, SP",
     "coords": [
-      -23.2032125,
-      -45.9540018
+      -23.202703413897417, -45.95403249168621
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -48,8 +45,7 @@
     "descricao": "Moradores: Daniela",
     "address": "Rua Virgínia Rivoli Gomes, 22, São José dos Campos, SP",
     "coords": [
-      -23.2053976,
-      -45.9577223
+      -23.203855359095854, -45.95559394684972
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -59,8 +55,7 @@
     "descricao": "Moradores: Paula",
     "address": "Rua Vicente Cursino dos Santos, 38, São José dos Campos, SP",
     "coords": [
-      -23.2050943,
-      -45.958343
+      -23.204682160962744, -45.95841194565244
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -70,8 +65,7 @@
     "descricao": "Moradores: Juliana",
     "address": "Rua Virgínia Rivoli Gomes, 402, São José dos Campos, SP",
     "coords": [
-      -23.2053976,
-      -45.9577223
+      -23.20531716189947, -45.95869703216094
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -81,8 +75,7 @@
     "descricao": "Moradores: Thais",
     "address": "Rua Rogerio Marcos Ribeiro, 83, São José dos Campos, SP",
     "coords": [
-      -23.2029773,
-      -45.953443
+      -23.202624796884795, -45.95356400332485
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -92,8 +85,7 @@
     "descricao": "Moradores: Jeovana",
     "address": "Antônio Hernandes Gomes, 91, São José dos Campos, SP",
     "coords": [
-      -23.2040495,
-      -45.9606821
+      -23.203893281701482, -45.96100003216091
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -103,8 +95,7 @@
     "descricao": "Moradores: Rita e Gustavo",
     "address": "Rua Herbert Brenner, 135, São José dos Campos, SP",
     "coords": [
-      -23.2047941264447,
-      -45.96031658983319
+      -23.20477440464625, -45.96026294565244
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -114,8 +105,7 @@
     "descricao": "Moradores: Ávila e Viviane",
     "address": "Rua Priscilliana de Moraes, 114, São José dos Campos, SP",
     "coords": [
-      -23.2032125,
-      -45.9540018
+      -23.203539932460384, -45.95411969168623
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -125,8 +115,7 @@
     "descricao": "Moradores: Thamara",
     "address": "Rua Maria José Amaral Alves, 64, São José dos Campos, SP",
     "coords": [
-      -23.2039908,
-      -45.9562032
+      -23.20378516444087, -45.956285703324724
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -136,8 +125,7 @@
     "descricao": "Moradores: Bianca",
     "address": "Avenida Antônio Widmer, 230, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.202656391738007, -45.956162459144004
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -147,8 +135,7 @@
     "descricao": "Moradores: Marcello e Elisabeth",
     "address": "Rua Priscilliana de Moraes, 83, São José dos Campos, SP",
     "coords": [
-      -23.2032125,
-      -45.9540018
+      -23.203154280720625, -45.953819389833306
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -158,8 +145,7 @@
     "descricao": "Moradores: Monica e Daniel",
     "address": "Rua José Moreira Sobrinho, 18, São José dos Campos, SP",
     "coords": [
-      -23.2033189,
-      -45.9551846
+      -23.20353250318121, -45.95536023216084
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -169,8 +155,7 @@
     "descricao": "Moradores: Adelle e Ricardo",
     "address": "Roberto Felicio, 55, São José dos Campos, SP",
     "coords": [
-      -23.2049128,
-      -45.9577188
+      -23.204390277794342, -45.95795856099701
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -180,8 +165,7 @@
     "descricao": "Moradores: Mariá",
     "address": "Roberto Felicio, 56, São José dos Campos, SP",
     "coords": [
-      -23.2049128,
-      -45.9577188
+      -23.204436547906486, -45.95767640332468
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -191,8 +175,7 @@
     "descricao": "Moradores: Gabriella e Beto",
     "address": "Rua José Moreira Sobrinho, 98, São José dos Campos, SP",
     "coords": [
-      -23.2033189,
-      -45.9551846
+      -23.203689603366414, -45.95527858798025
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -202,8 +185,7 @@
     "descricao": "Moradores: Gabriela",
     "address": "Rogério Marcos Ribeiro, 43, São José dos Campos, SP",
     "coords": [
-      -23.2029773,
-      -45.953443
+      -23.202865453161195, -45.953520834013865
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -213,8 +195,7 @@
     "descricao": "Moradores: Bruna",
     "address": "Rua Milton Martins, 11, São José dos Campos, SP",
     "coords": [
-      -23.2047018,
-      -45.9596489
+      -23.204813661156766, -45.95998387448876
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -224,8 +205,7 @@
     "descricao": "Moradores: Larissa",
     "address": "Omar Fonseca, 120, São José dos Campos, SP",
     "coords": [
-      -23.2050358,
-      -45.9590388
+      -23.205297483565438, -45.95926148983312
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -235,8 +215,7 @@
     "descricao": "Moradores: Estela",
     "address": "Rua Milton Martins, 122, São José dos Campos, SP",
     "coords": [
-      -23.2047018,
-      -45.9596489
+      -23.204889161268106, -45.96010208983317
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -246,8 +225,7 @@
     "descricao": "Moradores: Rene e Eliana",
     "address": "Rua Roberto Felicio, 35, São José dos Campos, SP",
     "coords": [
-      -23.2049128,
-      -45.9577188
+      -23.20448960431027, -45.9579292033248
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -257,8 +235,7 @@
     "descricao": "Moradores: Monique e Rafael",
     "address": "Rua José Moreira Sobrinho, 108, São José dos Campos, SP",
     "coords": [
-      -23.2033189,
-      -45.9551846
+      -23.20362769843791, -45.95510390332483
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -288,8 +265,7 @@
     "descricao": "Moradores: Tiago e Renata",
     "address": "Rua Doutor Marcos Fiuza Silva, 146, São José dos Campos, SP",
     "coords": [
-      -23.2033204,
-      -45.9545789
+      -23.203728054751576, -45.9545348186694
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -299,8 +275,7 @@
     "descricao": "Moradores: Jorge e Ana Paula",
     "address": "Av Antônio Widmer, 435, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.203849298781016, -45.957195287980156
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -310,8 +285,7 @@
     "descricao": "Moradores: Manuela",
     "address": "Av Antônio Widmer, 280, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.20295523637796, -45.956367203324625
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -321,8 +295,7 @@
     "descricao": "Moradores: Mariana e Andre",
     "address": "Av Antônio Widmer, 40, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.20312227564352, -45.96038390332482
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -332,8 +305,7 @@
     "descricao": "Moradores: Michele e Giovani",
     "address": "Milton Martins, 112, São José dos Campos, SP",
     "coords": [
-      -23.2047018,
-      -45.9596489
+      -23.20486728299437, -45.96003683216097
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -343,8 +315,7 @@
     "descricao": "Moradores: Vanessa e Felipe",
     "address": "Prisciliana de Moraes, 84, São José dos Campos, SP",
     "coords": [
-      -23.202892624482033,
-      -45.953948018669394
+      -23.20289407912075, -45.95394328757985
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -354,8 +325,7 @@
     "descricao": "Moradores: Carolina e Arthur",
     "address": "Avenida Antônio Widmer, 400, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.203811698722856, -45.95713733216077
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -365,8 +335,7 @@
     "descricao": "Moradores: Pedrita e André",
     "address": "Av. Antônio Widmer, 55, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.20345213718424, -45.96054498798028
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -376,8 +345,7 @@
     "descricao": "Moradores: Natália",
     "address": "Rua Virgínia Rivoli Gomes, 332, São José dos Campos, SP",
     "coords": [
-      -23.2053976,
-      -45.9577223
+      -23.20518020084216, -45.95801253216097
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -387,8 +355,7 @@
     "descricao": "Moradores: Leandro e Cristiane",
     "address": "Virgínia Rivoli Gomes, 13, São José dos Campos, SP",
     "coords": [
-      -23.2053976,
-      -45.9577223
+      -23.203801598707166, -45.955376760997105
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -398,8 +365,7 @@
     "descricao": "Moradores: Júlia e Andre",
     "address": "Priscilliana de Moraes, 103, São José dos Campos, SP",
     "coords": [
-      -23.2032125,
-      -45.9540018
+      -23.203195848788315, -45.95378438983332
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -409,8 +375,7 @@
     "descricao": "",
     "address": "Daniel Alves Areas, 40, São José dos Campos, SP",
     "coords": [
-      -23.2043792,
-      -45.9566095
+      -23.204282204065564, -45.956733732160814
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -420,8 +385,7 @@
     "descricao": "Moradores: Nani e Zoppi",
     "address": "R Dr Marcos Fiuza Silva, 145, São José dos Campos, SP",
     "coords": [
-      -23.2033204,
-      -45.9545789
+      -23.20358699837492, -45.95438178983315
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -431,8 +395,7 @@
     "descricao": "",
     "address": "Rogério Marcos Ribeiro, 102, São José dos Campos, SP",
     "coords": [
-      -23.2029773,
-      -45.953443
+      -23.203196558771598, -45.953506332160956
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -442,8 +405,7 @@
     "descricao": "",
     "address": "Antonio Widmer, 340, São José dos Campos, SP",
     "coords": [
-      -23.2027916,
-      -45.9561257
+      -23.203405898094534, -45.95693813216095
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -453,8 +415,7 @@
     "descricao": "Moradores: Vivian",
     "address": "Omar Fonseca, 59, São José dos Campos, SP",
     "coords": [
-      -23.2050358,
-      -45.9590388
+      -23.20487362212361, -45.95898900332479
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -464,8 +425,7 @@
     "descricao": "Moradores: Raissa e André",
     "address": "Rua Herbert Brenner, 143, São José dos Campos, SP",
     "coords": [
-      -23.2047506001769,
-      -45.960330160996975
+      -23.204760461078244, -45.960287245652374
     ],
     "geocoded": true,
     "img": "assets/pumpkin.png"
@@ -482,7 +442,7 @@
   },
   {
     "nome": "Av Antonio Widmer, 150",
-    "descricao": "",
+    "descricao": "-localização incorreta no maps",
     "address": "Av Antonio Widmer, 150, São José dos Campos, SP",
     "coords": [
       -23.2027916,
@@ -503,7 +463,7 @@
   },
   {
     "nome": "Av. antonio Widmer, 200",
-    "descricao": "Moradores: Luana e Gabriel",
+    "descricao": "Moradores: Luana e Gabriel -localização incorreta no maps",
     "address": "Av. antonio Widmer, 200, São José dos Campos, SP",
     "coords": [
       -23.2027916,
