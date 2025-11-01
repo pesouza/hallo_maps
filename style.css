@@ -23,51 +23,6 @@ p {
 }
 
 #map {
-  height: 85vh;
-  width: 100%;
-  border-top: 3px solid #ff6600;
-  border-bottom: 3px solid #ff6600;
-}
-
-.leaflet-popup-content {
-  text-align: center;
-}
-
-.popup-img {
-  width: 120px;
-  border-radius: 10px;
-  margin-top: 5px;
-  box-shadow: 0 0 10px #ff6600;
-}
-
-#visitas {
-  color: #00ffcc;
-  font-weight: bold;
-}body {
-  margin: 0;
-  font-family: "Comic Sans MS", cursive;
-  background-color: #1b0033;
-  color: #ffcc00;
-  text-align: center;
-}
-
-h1 {
-  margin: 10px 0 0 0;
-  font-size: 2em;
-  text-shadow: 2px 2px 5px #ff6600;
-}
-
-p {
-  margin: 0 0 10px 0;
-  font-size: 1.1em;
-}
-
-#contador {
-  margin-bottom: 10px;
-  font-size: 1.3em;
-}
-
-#map {
   height: 75vh;
   width: 100%;
   border-top: 3px solid #ff6600;
@@ -107,6 +62,21 @@ p {
   animation: fadein 0.8s ease-in-out;
 }
 
+#vitoria button {
+  margin-top: 20px;
+  font-size: 1em;
+  padding: 10px 20px;
+  border: none;
+  background: #ff6600;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff6600;
+}
+#vitoria button:hover {
+  background: #ff3300;
+}
+
 .hidden {
   display: none;
 }
@@ -115,4 +85,3 @@ p {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
